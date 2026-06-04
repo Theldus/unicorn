@@ -424,6 +424,11 @@ typedef enum uc_ppc_reg {
     UC_PPC_REG_FPSCR,
     UC_PPC_REG_CR,
 
+    UC_PPC_REG_SPRG0,
+    UC_PPC_REG_SPRG1,
+    UC_PPC_REG_SPRG2,
+    UC_PPC_REG_SPRG3,
+
     UC_PPC_REG_ENDING, // <-- mark the end of the list or registers
 } uc_ppc_reg;
 

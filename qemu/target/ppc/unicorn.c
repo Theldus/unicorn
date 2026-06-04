@@ -162,6 +162,9 @@ uc_err reg_read(void *_env, int mode, unsigned int regid, void *value,
     } else if (regid >= UC_PPC_REG_CR0 && regid <= UC_PPC_REG_CR7) {
         CHECK_REG_TYPE(uint32_t);
         *(uint32_t *)value = env->crf[regid - UC_PPC_REG_CR0];
+    } else if (regid >= UC_PPC_REG_SPRG0 && regid <= UC_PPC_REG_SPRG3) {
+        CHECK_REG_TYPE(ppcreg_t);
+        *(ppcreg_t *)value = env->spr[regid - UC_PPC_REG_SPRG0 + SPR_SPRG0];
     } else {
         switch (regid) {
         default:
@@ -224,6 +227,9 @@ uc_err reg_write(void *_env, int mode, unsigned int regid, const void *value,
     } else if (regid >= UC_PPC_REG_CR0 && regid <= UC_PPC_REG_CR7) {
         CHECK_REG_TYPE(uint32_t);
         env->crf[regid - UC_PPC_REG_CR0] = (*(uint32_t *)value) & 0b1111;
+    } else if (regid >= UC_PPC_REG_SPRG0 && regid <= UC_PPC_REG_SPRG3) {
+        CHECK_REG_TYPE(ppcreg_t);
+        env->spr[regid - UC_PPC_REG_SPRG0 + SPR_SPRG0] = *(ppcreg_t *)value;
     } else {
         switch (regid) {
         default:
