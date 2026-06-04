@@ -1601,6 +1601,14 @@ static void gen_spr_601(CPUPPCState *env)
     env->nb_BATs = 4;
 }
 
+static void gen_spr_usprg3(CPUPPCState *env)
+{
+    spr_register(env, SPR_USPRG3, "USPRG3",
+                 &spr_read_ureg, SPR_NOACCESS,
+                 &spr_read_ureg, SPR_NOACCESS,
+                 0x00000000);
+}
+
 static void gen_spr_74xx(CPUPPCState *env)
 {
     /* Processor identification */
@@ -1651,6 +1659,9 @@ static void gen_spr_74xx(CPUPPCState *env)
                  0x00000000);
     /* Not strictly an SPR */
     vscr_init(env, 0x00010000);
+
+    /* Enable USPRG3 in 74XX. */
+    gen_spr_usprg3(env);
 }
 
 static void gen_l3_ctrl(CPUPPCState *env)
@@ -1742,14 +1753,6 @@ static void spr_write_epsc(DisasContext *ctx, int sprn, int gprn)
 {
     TCGContext *tcg_ctx = ctx->uc->tcg_ctx;
     gen_helper_booke_set_epsc(tcg_ctx, tcg_ctx->cpu_env, cpu_gpr[gprn]);
-}
-
-static void gen_spr_usprg3(CPUPPCState *env)
-{
-    spr_register(env, SPR_USPRG3, "USPRG3",
-                 &spr_read_ureg, SPR_NOACCESS,
-                 &spr_read_ureg, SPR_NOACCESS,
-                 0x00000000);
 }
 
 static void gen_spr_usprgh(CPUPPCState *env)
